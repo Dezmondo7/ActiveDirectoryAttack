@@ -15,6 +15,7 @@ Connectivity Issue: Initial pings between Kali and Windows 10 timed out due to d
 The Fix: Manually enabled the File and Printer Sharing (Echo Request - ICMPv4-In) rule within the Windows Defender Firewall.
 
 Validation: Successfully verified the communication plane using ipconfig (Windows) and ip a (Kali), followed by a successful ICMP handshake.
+<img width="800" alt="ENABLE Rule Windows 10 x64 - VMware Workstation" src="https://github.com/user-attachments/assets/e5202d43-fadb-4e3d-aac0-82c81384b728" />
 
 </details>
 
@@ -29,6 +30,7 @@ Static IP Rationale: Critical for the "Fixed Identity" of the Domain Controller.
 DNS Logic: Configured the Preferred DNS to point to itself (127.0.0.1). This ensures the DC can register and resolve its own SRV records (_ldap._tcp & _kerberos._tcp), which are the backbone of Active Directory discovery.
 
 Validation: Confirmed functionality via nslookup lab.local and ping lab.local.
+<img width="800" alt="Domain_Joined" src="https://github.com/user-attachments/assets/b4b87e20-62ba-4031-84a7-4ea8bb6a8f43" />
 
 </details>
 
@@ -41,6 +43,7 @@ I implemented a logical hierarchy within Active Directory Users and Computers (A
 The Build: Created an OU named "User" under the lab.local domain.
 
 Why OUs? This mimics real-world enterprise environments, allowing for Group Policy Object (GPO) targeting and administrative delegation. It provides a structured boundary for security policies.
+<img width="800" alt="user" src="https://github.com/user-attachments/assets/aa33c05e-fb04-42c0-864e-961f1178cd1d" />
 
 </details>
 
@@ -53,6 +56,7 @@ To prepare for offensive testing, I provisioned user accounts with a "Security-W
 Configuration: Unchecked "User must change password at next logon" and assigned a weak password.
 
 Purpose: This creates a predictable target for future brute-force or password-spraying simulations within the lab environment.
+<img width="800" alt="john-loggin" src="https://github.com/user-attachments/assets/2c236367-f8d3-4d12-85bf-ce6fdcdbeac3" />
 
 </details>
 
@@ -65,6 +69,7 @@ Transitioned the Windows 10 machine from a standalone Workgroup to the lab.local
 Under the Hood: A Computer Account (WIN10$) was created in AD. The client and DC now share a machine password and a secure Kerberos channel.
 
 Result: Authentication shifted from the local Security Accounts Manager (SAM) to the centralized Domain Controller. This establishes the machine as a trusted entity within the domain security boundary.
+<img width="800" alt="Domain_Joined" src="https://github.com/user-attachments/assets/0c248d1a-4bcf-41a9-a3a0-58df3b3679c4" />
 
 </details>
 
@@ -83,6 +88,7 @@ Port 88 (Kerberos): Potential for ticket-based attacks (AS-REP Roasting).
 Port 389/636 (LDAP): Entry point for user/group enumeration.
 
 Port 445 (SMB): Target for file share enumeration and relay attacks.
+<img width="800" alt="reconissance1" src="https://github.com/user-attachments/assets/720d0428-e780-4d45-b317-29d7c14f4d56" />
 
 </details>
 
@@ -97,5 +103,6 @@ Command: smbclient -L //[DC_IP] -N
 The Result: The DC accepted the Null Session (Anonymous login).
 
 Security Impact: This vulnerability allows an unauthenticated attacker to view available shares and gather directory information without a single credential, representing a significant risk to data confidentiality.
+<img width="800" alt="attacksmbclient" src="https://github.com/user-attachments/assets/4829164a-e66c-479b-aece-3abf41f195dd" />
 
 </details>
